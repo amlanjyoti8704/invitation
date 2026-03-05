@@ -1,6 +1,7 @@
 import { stripe } from "@/lib/stripe";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
+import QRCode from "qrcode";
 
 export async function POST(req) {
 
@@ -10,13 +11,11 @@ export async function POST(req) {
   let event;
 
   try {
-
     event = stripe.webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-
   } catch (err) {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
@@ -27,10 +26,22 @@ export async function POST(req) {
 
     await connectDB();
 
-    await Booking.create({
-      userEmail: session.metadata.userEmail,
+    const qrData = JSON.stringify({
+      eventId: session.metadata.eventId,
       eventTitle: session.metadata.title,
+      email: session.metadata.userEmail,
+      paymentIntent: session.payment_intent
+    });
+
+    const qrCode = await QRCode.toDataURL(qrData);
+
+    await Booking.create({
+      eventId: session.metadata.eventId,
+      eventTitle: session.metadata.title,
+      userEmail: session.metadata.userEmail,
       amount: session.metadata.price,
+      paymentIntentId: session.payment_intent,
+      qrCode: qrCode
     });
 
   }

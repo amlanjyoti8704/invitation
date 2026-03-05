@@ -4,15 +4,17 @@ import Image from "next/image";
 // import { events } from "@/app/data/events";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
-export default  function EventDetails({ params }) {
+export default function EventDetails() {
 
-  const { id } = use(params);
+  const { id } = useParams();
   const { data: session } = useSession();
   const [event, setEvent] = useState(null);
 
-
   useEffect(() => {
+
+    if (!id) return; 
 
     async function getEvent() {
       const res = await fetch(`/api/events/${id}`);
@@ -28,24 +30,31 @@ export default  function EventDetails({ params }) {
     return <h1 className="p-10 text-2xl">Loading event...</h1>;
   }
 
-  const handleCheckout = async () => {
+const handleCheckout = async () => {
 
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: event.title,
-        price: event.price,
-        userEmail: session?.user?.email
-      }),
-    });
+  const res = await fetch("/api/checkout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      eventId: event._id,
+      title: event.title,
+      price: event.price,
+      userEmail: session?.user?.email
+    }),
+  });
 
-    const data = await res.json();
+  if (!res.ok) {
+    const error = await res.text();
+    console.error("Checkout error:", error);
+    return;
+  }
 
-    window.location.href = data.url;
-  };
+  const data = await res.json();
+
+  window.location.href = data.url;
+};
 
   return (
     <div className="px-10 py-20">

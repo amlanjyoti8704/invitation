@@ -14,7 +14,10 @@ export default function Navbar() {
       <div className="flex gap-6">
         <Link href="/">Home</Link>
         <Link href="/events">Events</Link>
-        <Link href="/dashboard">Dashboard</Link>
+
+        {session && (
+          <Link href="/dashboard">Dashboard</Link>
+        )}
       </div>
 
       {session ? (

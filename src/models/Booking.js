@@ -6,6 +6,8 @@ const BookingSchema = new mongoose.Schema({
   eventTitle: String,
   userEmail: String,
   amount: Number,
+  paymentIntentId: String,
+  qrCode: String,
   createdAt: {
     type: Date,
     default: Date.now,

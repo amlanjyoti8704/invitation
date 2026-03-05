@@ -10,7 +10,10 @@ export async function GET() {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return Response.json([]);
+        return Response.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
     }
 
     const bookings = await Booking.find({
