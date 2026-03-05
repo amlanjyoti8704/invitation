@@ -1,7 +1,9 @@
+
 import mongoose from "mongoose";
 
 const BookingSchema = new mongoose.Schema({
   eventId: String,
+  eventTitle: String,
   userEmail: String,
   amount: Number,
   createdAt: {
@@ -12,3 +14,4 @@ const BookingSchema = new mongoose.Schema({
 
 export default mongoose.models.Booking ||
   mongoose.model("Booking", BookingSchema);
+  

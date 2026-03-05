@@ -1,13 +1,37 @@
+"use client";
+import { use } from "react";
 import Image from "next/image";
 import { events } from "@/app/data/events";
 
-export default async function EventDetails({ params }) {
-  const { id } = await params;
+export default  function EventDetails({ params }) {
+
+  const { id } = use(params);
+
   const event = events.find((e) => String(e.id) === id);
-    if (!event) {
-        console.log("Event not found for id:", id);
-        return <h1 className="p-10 text-2xl">Event not found</h1>;
-    }
+
+  if (!event) {
+    console.log("Event not found for id:", id);
+    return <h1 className="p-10 text-2xl">Event not found</h1>;
+  }
+
+  const handleCheckout = async () => {
+
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: event.title,
+        price: event.price,
+      }),
+    });
+
+    const data = await res.json();
+
+    window.location.href = data.url;
+  };
+
   return (
     <div className="px-10 py-20">
 
@@ -35,7 +59,10 @@ export default async function EventDetails({ params }) {
         {event.description}
       </p>
 
-      <button className="mt-8 bg-black text-white px-6 py-3 rounded-lg">
+      <button
+        onClick={handleCheckout}
+        className="mt-8 bg-slate-600 text-white px-6 py-3 rounded-lg"
+      >
         Book Ticket
       </button>
 
