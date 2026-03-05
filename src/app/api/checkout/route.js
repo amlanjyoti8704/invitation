@@ -25,6 +25,7 @@ export async function POST(req) {
     metadata: {
       title: body.title,
       price: body.price,
+      userEmail: body.userEmail,
     },
 
     success_url: "http://localhost:3000/success",

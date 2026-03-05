@@ -28,6 +28,7 @@ export async function POST(req) {
     await connectDB();
 
     await Booking.create({
+      userEmail: session.metadata.userEmail,
       eventTitle: session.metadata.title,
       amount: session.metadata.price,
     });

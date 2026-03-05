@@ -1,10 +1,25 @@
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET() {
-  await connectDB();
+  try {
+    await connectDB();
 
-  const bookings = await Booking.find().sort({ createdAt: -1 });
+    const session = await getServerSession(authOptions);
 
-  return Response.json(bookings);
+    if (!session) {
+      return Response.json([]);
+    }
+
+    const bookings = await Booking.find({
+      userEmail: session.user.email,
+    });
+
+    return Response.json(bookings);
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error: "Server error" }, { status: 500 });
+  }
 }

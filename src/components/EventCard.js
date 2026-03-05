@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function EventCard({ event }) {
   return (
-    <Link href={`/events/${event.id}`}>
+    <Link href={`/events/${event._id}`}>
       <div className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer hover:scale-105 transition">
 
         <img

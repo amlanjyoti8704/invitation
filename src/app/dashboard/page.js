@@ -1,39 +1,37 @@
-async function getBookings() {
-  const res = await fetch("http://localhost:3000/api/bookings");
-  return res.json();
-}
+"use client";
 
-export default async function Dashboard() {
-  const bookings = await getBookings();
+import { useEffect, useState } from "react";
+
+export default function Dashboard() {
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    async function fetchBookings() {
+      const res = await fetch("/api/bookings");
+      const data = await res.json();
+      setBookings(data);
+    }
+
+    fetchBookings();
+  }, []);
 
   return (
-    <div className="px-10 py-20">
+    <div className="p-10">
+      <h1 className="text-3xl font-bold mb-6">Your Tickets</h1>
 
-      <h1 className="text-3xl font-bold mb-8">
-        My Bookings
-      </h1>
+      {bookings.map((booking) => (
+        <div
+          key={booking._id}
+          className="border p-4 rounded-lg mb-4"
+        >
+          <h2 className="text-xl font-semibold">
+            {booking.eventTitle}
+          </h2>
 
-      <div className="space-y-4">
-
-        {bookings.map((booking) => (
-          <div
-            key={booking._id}
-            className="border p-4 rounded-lg"
-          >
-            <h2 className="font-semibold">
-              {booking.eventTitle}
-            </h2>
-
-            <p>Amount: ₹{booking.amount}</p>
-
-            <p className="text-gray-500">
-              {new Date(booking.createdAt).toDateString()}
-            </p>
-          </div>
-        ))}
-
-      </div>
-
+          <p>Price: ₹{booking.amount}</p>
+          <p>Email: {booking.userEmail}</p>
+        </div>
+      ))}
     </div>
   );
 }

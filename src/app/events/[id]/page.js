@@ -1,17 +1,31 @@
 "use client";
 import { use } from "react";
 import Image from "next/image";
-import { events } from "@/app/data/events";
+// import { events } from "@/app/data/events";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default  function EventDetails({ params }) {
 
   const { id } = use(params);
+  const { data: session } = useSession();
+  const [event, setEvent] = useState(null);
 
-  const event = events.find((e) => String(e.id) === id);
+
+  useEffect(() => {
+
+    async function getEvent() {
+      const res = await fetch(`/api/events/${id}`);
+      const data = await res.json();
+      setEvent(data);
+    }
+
+    getEvent();
+
+  }, [id]);
 
   if (!event) {
-    console.log("Event not found for id:", id);
-    return <h1 className="p-10 text-2xl">Event not found</h1>;
+    return <h1 className="p-10 text-2xl">Loading event...</h1>;
   }
 
   const handleCheckout = async () => {
@@ -24,6 +38,7 @@ export default  function EventDetails({ params }) {
       body: JSON.stringify({
         title: event.title,
         price: event.price,
+        userEmail: session?.user?.email
       }),
     });
 
@@ -35,13 +50,15 @@ export default  function EventDetails({ params }) {
   return (
     <div className="px-10 py-20">
 
-      <Image
-        src={event.image}
-        width={1200}
-        height={400}
-        alt={event.title}
-        className="w-full h-96 object-cover rounded-xl"
-      />
+      {event.image && (
+        <Image
+          src={event.image}
+          width={1200}
+          height={400}
+          alt={event.title}
+          className="w-full h-96 object-cover rounded-xl"
+        />
+      )}
 
       <h1 className="text-4xl font-bold mt-6">
         {event.title}
