@@ -18,7 +18,12 @@ export default function Navbar() {
         {session && (
           <Link href="/dashboard">Dashboard</Link>
         )}
-        <Link href="/verify">Verify Ticket</Link>
+        {session?.user?.role === "admin"?(
+          <>
+            <Link href="/admin">Admin</Link>
+            <Link href="/verify">Verify Ticket</Link>
+          </>
+        ):null}
       </div>
 
       {session ? (

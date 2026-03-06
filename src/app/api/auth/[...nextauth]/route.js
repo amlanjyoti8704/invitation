@@ -8,6 +8,23 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+
+  callbacks: {
+    async session({ session }) {
+
+      const adminEmails = [
+        "amlanjyoti3345@gmail.com" // replace with your GitHub email
+      ];
+
+      if (adminEmails.includes(session.user.email)) {
+        session.user.role = "admin";
+      } else {
+        session.user.role = "user";
+      }
+
+      return session;
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);

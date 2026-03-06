@@ -4,7 +4,6 @@ import Booking from "@/models/Booking";
 export async function POST(req) {
 
   const body = await req.json();
-
   const qrData = JSON.parse(body.qrData);
 
   await connectDB();
@@ -14,11 +13,23 @@ export async function POST(req) {
   });
 
   if (!booking) {
-    return Response.json(
-      { error: "Invalid Ticket" },
-      { status: 404 }
-    );
+    return Response.json({
+      status: "invalid"
+    });
   }
 
-  return Response.json(booking);
+  if (booking.used) {
+    return Response.json({
+      status: "already_used"
+    });
+  }
+
+  booking.used = true;
+  await booking.save();
+
+  return Response.json({
+    status: "valid",
+    eventTitle: booking.eventTitle,
+    userEmail: booking.userEmail
+  });
 }

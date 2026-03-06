@@ -2,6 +2,7 @@ import { stripe } from "@/lib/stripe";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import QRCode from "qrcode";
+import { sendTicketEmail } from "@/lib/sendEmail";
 
 export async function POST(req) {
 
@@ -43,6 +44,12 @@ export async function POST(req) {
       paymentIntentId: session.payment_intent,
       qrCode: qrCode
     });
+
+    await sendTicketEmail(
+      session.metadata.userEmail,
+      session.metadata.title,
+      qrCode
+    );
 
   }
 

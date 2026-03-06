@@ -8,6 +8,10 @@ const BookingSchema = new mongoose.Schema({
   amount: Number,
   paymentIntentId: String,
   qrCode: String,
+  used:{
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

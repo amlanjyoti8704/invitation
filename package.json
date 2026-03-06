@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@yudiel/react-qr-scanner": "^2.5.1",
+    "cloudinary": "^2.9.0",
     "mongoose": "^9.2.4",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
+    "nodemailer": "^7.0.13",
     "qrcode": "^1.5.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",

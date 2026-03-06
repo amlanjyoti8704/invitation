@@ -37,28 +37,33 @@ export default function VerifyTicket() {
         <Scanner onScan={handleScan} />
       </div>
 
-      {ticket && (
+        {ticket && (
 
         <div className="mt-6 p-6 border rounded-xl">
 
-          {ticket.error ? (
-            <p className="text-red-500">
-              Invalid Ticket ❌
-            </p>
-          ) : (
-            <>
-              <p className="text-green-600 font-semibold">
-                Ticket Valid ✅
-              </p>
+            {ticket.status === "valid" && (
+            <div className="text-green-600">
+                <h2 className="text-xl font-semibold">Ticket Valid ✅</h2>
+                <p>Event: {ticket.eventTitle}</p>
+                <p>User: {ticket.userEmail}</p>
+            </div>
+            )}
 
-              <p>Event: {ticket.eventTitle}</p>
-              <p>User: {ticket.userEmail}</p>
-            </>
-          )}
+            {ticket.status === "already_used" && (
+            <p className="text-yellow-600">
+                Ticket Already Used ⚠️
+            </p>
+            )}
+
+            {ticket.status === "invalid" && (
+            <p className="text-red-600">
+                Invalid Ticket ❌
+            </p>
+            )}
 
         </div>
 
-      )}
+        )}
 
     </div>
   );
