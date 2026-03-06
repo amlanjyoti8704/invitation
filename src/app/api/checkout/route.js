@@ -30,8 +30,8 @@ export async function POST(req) {
         userEmail: body.userEmail,
       },
 
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/events",
+      success_url: `${process.env.NEXTAUTH_URL}/success`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/events`,
     });
 
     return Response.json({ url: session.url });
