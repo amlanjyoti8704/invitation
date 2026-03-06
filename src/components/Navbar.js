@@ -18,6 +18,7 @@ export default function Navbar() {
         {session && (
           <Link href="/dashboard">Dashboard</Link>
         )}
+        <Link href="/verify">Verify Ticket</Link>
       </div>
 
       {session ? (
