@@ -2,6 +2,8 @@ import EventCard from "./EventCard";
 import { connectDB } from "@/lib/mongodb";
 import Event from "@/models/Event";
 
+export const dynamic = "force-dynamic";
+
 export default async function FeaturedEvents() {
 
   await connectDB();
