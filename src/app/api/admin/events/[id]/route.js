@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import Event from "@/models/Event";
+import { revalidatePath } from "next/cache";
 
 export async function DELETE(req, context) {
 
@@ -8,6 +9,9 @@ export async function DELETE(req, context) {
   await connectDB();
 
   await Event.findByIdAndDelete(params.id);
+
+  revalidatePath("/events");
+  revalidatePath("/");
 
   return Response.json({ message: "Event deleted" });
 }
