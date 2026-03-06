@@ -1,16 +1,13 @@
 import EventCard from "./EventCard";
-// import { events } from "@/app/data/events";
-import { use } from "react";
+import { connectDB } from "@/lib/mongodb";
+import Event from "@/models/Event";
 
+export default async function FeaturedEvents() {
 
-export default function FeaturedEvents() {
+  await connectDB();
 
-  async function getEvents() {
-    const res = await fetch("http://localhost:3000/api/events");
-    const data = await res.json();
-    return data;
-  }
-  const events = use(getEvents());
+  const events = await Event.find();
+
   return (
     <section className="px-10 py-20">
 
@@ -20,7 +17,7 @@ export default function FeaturedEvents() {
 
       <div className="grid md:grid-cols-3 gap-8">
         {events.map((event) => (
-          <EventCard key={event._id} event={event} />
+          <EventCard key={event._id.toString()} event={event} />
         ))}
       </div>
 
