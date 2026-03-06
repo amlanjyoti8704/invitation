@@ -2,7 +2,7 @@ import EventCard from "./EventCard";
 import { connectDB } from "@/lib/mongodb";
 import Event from "@/models/Event";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 5;
 
 export default async function FeaturedEvents() {
 
