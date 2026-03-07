@@ -11,7 +11,7 @@ export default function EventCard({ event }) {
         />
 
         <div className="p-4">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-xl font-semibold text-gray-700">
             {event.title}
           </h2>
 

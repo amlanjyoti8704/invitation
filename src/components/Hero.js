@@ -3,13 +3,13 @@ import Link from "next/link";
 export default function Hero() {
   
   return (
-    <section className="flex flex-col items-center justify-center text-center py-24 bg-gray-100">
+    <section className="flex flex-col items-center justify-center text-center py-24 bg-gray-500">
       
-      <h1 className="text-5xl font-bold mb-6 text-slate-500">
+      <h1 className="text-5xl font-bold mb-6 text-gray-800">
         Plan Your Perfect Event
       </h1>
 
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="text-lg text-gray-700 mb-8">
         Discover and book amazing events around you.
       </p>
 
